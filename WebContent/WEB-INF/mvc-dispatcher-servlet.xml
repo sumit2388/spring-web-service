@@ -1,0 +1,55 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans     
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context-3.0.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
+        
+		<context:annotation-config/> 
+	<context:component-scan base-package="net.one97.pendingMT" />
+		
+	<mvc:annotation-driven />
+	
+	
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location" value="classpath:bangoPendingMT.properties" />
+	</bean>
+	
+
+
+ 	<bean id="contextPropertiesLoader" 	class="net.one97.pendingMT.bean.PropertyLoader" 
+    	parent="propertyConfigurer"> 
+	</bean> 
+	
+	<bean id="dataSourceFetch" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass" value="${jdbc.fetch.driver}" />
+		<property name="jdbcUrl" value="${jdbc.fetch.url}" />
+		<property name="user" value="${jdbc.fetch.user}" />
+		<property name="password" value="${jdbc.fetch.pwd}" />
+		<property name="initialPoolSize" value="${jdbc.fetch.initialPoolSize}" />
+		<property name="minPoolSize" value="${jdbc.fetch.minPoolSize}" />
+		<property name="maxPoolSize" value="${jdbc.fetch.maxPoolSize}" />
+		<property name="checkoutTimeout" value="${jdbc.fetch.checkoutTimeout}" />
+		<property name="acquireIncrement" value="${jdbc.fetch.acquireIncrement}" />
+		<property name="maxIdleTime" value="${jdbc.fetch.maxIdleTime}" />
+		<property name="maxStatements" value="${jdbc.fetch.maxStatements}" />
+		<property name="numHelperThreads" value="${jdbc.fetch.numHelperThreads}" />
+		<property name="idleConnectionTestPeriod" value="100" />
+		<property name="preferredTestQuery" value="select 1" />
+	</bean>
+	
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="dataSourceFetch" />
+	</bean>
+
+ 	
+
+	
+
+
+</beans>
